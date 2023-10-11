@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: production-rollouts
+  labels:
+    codefresh.io/entity: component
+    codefresh.io/internal: "false"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: csdp
+  source:
+    chart: argo-rollouts
+    repoURL: https://codefresh-io.github.io/argo-helm
+    targetRevision: 2.22.1-1-cap-sw
+    helm:
+      releaseName: argo-rollouts
+  destination:
+    namespace: default
+    server: https://101.44.32.101:5443
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
